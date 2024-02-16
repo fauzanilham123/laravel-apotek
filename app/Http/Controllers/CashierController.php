@@ -14,7 +14,7 @@ class CashierController extends Controller
     public function index()
     {
         //
-        $recipes = recipe::sortable()->where('flag', 1)->where('transaksi', 0)->paginate(5);
+        $recipes = recipe::sortable()->where('flag', 1)->where('transaksi', 0)->paginate(10);
 
         //render view with recipe
         return view('kasir.index', compact('recipes'));

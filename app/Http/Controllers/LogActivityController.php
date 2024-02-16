@@ -15,7 +15,7 @@ class LogActivityController extends Controller
     {
         //
         //get posts
-        $logactivities = LogActivity::sortable()->paginate(5);
+        $logactivities = LogActivity::sortable()->paginate(10);
 
         //render view with logactivities
         return view('admin.logactivity.index', compact('logactivities'));

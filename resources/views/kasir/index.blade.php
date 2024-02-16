@@ -175,7 +175,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($recipes as $recipe)
+                        @foreach ($recipes as $recipe)
                             <tr>
                                 <td class="p-4 border-b border-blue-gray-50">
                                     <p
@@ -225,8 +225,7 @@
                                     </p>
                                 </td>
                             </tr>
-                        @empty
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
                 <div class="my-2 mx-auto">{{ $recipes->Links() }}</div>

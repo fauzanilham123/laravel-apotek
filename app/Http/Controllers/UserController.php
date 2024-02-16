@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         //
         //get posts
-        $users = user::sortable()->paginate(5);
+        $users = user::sortable()->paginate(10);
 
         //render view with users
         return view('admin.user.index', compact('users'));

@@ -14,7 +14,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = recipe::sortable()->where('flag', 1)->paginate(10);
+        $recipes = recipe::sortable()->where('flag', 1)->where('transaksi', 0)->paginate(10);
         $drugs = drugs::get()->where('flag', 1);
 
         //render view with recipes
@@ -41,9 +41,17 @@ class RecipeController extends Controller
             'nama_dokter' => 'required',
             'nama_obat' => 'required',
             'nama_pasien' => 'required',
-            'jumlah_obat' => 'required',
+            'jumlah_obat' => 'required|numeric|min:1', // Menggunakan numeric dan min:1 untuk memastikan jumlah_obat positif
         ]);
 
+            // Mengambil jumlah obat yang tersedia dari tabel obat
+        $drug = Drugs::find($request->nama_obat);
+        $jumlah_obat_tersedia = $drug->jumlah;
+
+        // Memeriksa apakah jumlah_obat yang diminta melebihi jumlah obat yang tersedia
+        if ($request->jumlah_obat > $jumlah_obat_tersedia) {
+            return redirect()->route('resep.index')->with(['error' => 'Jumlah obat melebihi stok yang tersedia.'])->withInput($request->all())->with('jumlah_obat_tersedia', $jumlah_obat_tersedia);
+        }
         recipe::create([
         'no' => $request->no,
         'date' => $request->date,
@@ -53,7 +61,11 @@ class RecipeController extends Controller
         'jumlah_obat' => $request->jumlah_obat,
         'flag' => 1,
     ]);
-    return redirect()->route('resep.index')-> with(['success' => 'Data Berhasil Disimpan!']);
+
+    // Mengurangi jumlah obat yang tersedia di tabel obat
+    $drug->update(['jumlah' => $jumlah_obat_tersedia - $request->jumlah_obat]);
+
+    return redirect()->route('resep.index')->with(['success' => 'Data Berhasil Disimpan!']);
     }
 
     /**

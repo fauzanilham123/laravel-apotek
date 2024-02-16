@@ -16,7 +16,7 @@ class TransactionController extends Controller
     public function index()
     {
         //
-        $transactions = Transaction::sortable()->where('flag',1)->paginate(5);
+        $transactions = Transaction::sortable()->where('flag',1)->paginate(10);
 
         //render view with transactions
         return view('admin.laporan.index', compact('transactions'));

@@ -103,6 +103,14 @@
                                         value="{{ old('jumlah_obat') }}" />
                                 </label>
                             </div>
+                            <!-- Di dalam file blade view untuk halaman index -->
+                            @if (session('error'))
+                                <div class="bg-red-500 text-white px-2 mt-2">
+                                    {{ session('error') }}
+                                    <br>
+                                    Obat tersisa: {{ session('jumlah_obat_tersedia') }}
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="mt-2 md:ml-[70px]">
@@ -174,7 +182,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($recipes as $recipe)
+                        @foreach ($recipes as $recipe)
                             <tr>
                                 <td class="p-4 border-b border-blue-gray-50">
                                     <p
@@ -243,8 +251,7 @@
                                     </form>
                                 </td>
                             </tr>
-                        @empty
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
                 <div class="my-2 mx-auto">{{ $recipes->Links() }}</div>
