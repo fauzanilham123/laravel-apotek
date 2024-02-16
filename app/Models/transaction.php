@@ -18,7 +18,7 @@ class transaction extends Model
         'total_bayar',
         'id_user',
         'id_drug',
-        'id_resep',
+        'id_recipe',
         'flag',
     ];
     public $sortable = [

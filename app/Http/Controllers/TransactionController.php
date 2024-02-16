@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\transaction;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 
 class TransactionController extends Controller
 {
@@ -23,9 +25,10 @@ class TransactionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        
+
     }
 
     /**
@@ -33,6 +36,23 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+        $this->validate($request, [
+            'total_bayar' => 'required',
+            'id_drug' => 'required',
+            'id_recipe' => 'required',
+        ]);
+        $randomTransactionNumber = str_pad(mt_rand(1, 99999999999), 11, '0', STR_PAD_LEFT);
+
+        transaction::create([
+        'total_bayar' => $request->total_bayar,
+        'id_drug' => $request->id_drug,
+        'id_recipe' => $request->id_recipe,
+        'no' => $randomTransactionNumber,
+        'id_user' => $user->id,
+        'flag' => 1,
+    ]);
+    return redirect()->route('kasir.index')-> with(['success' => 'Data Berhasil Disimpan!']);
         //
     }
 

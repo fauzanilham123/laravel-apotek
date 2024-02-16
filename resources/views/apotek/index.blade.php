@@ -28,7 +28,7 @@
                     RESEP
                 </h1>
             </div>
-            <a href="/logout">
+            <a href="{{ route('logout') }}">
                 <div
                     class="text-white w-[70px] p-1 bg-lime-600 md:mx-auto rounded-md border-2 border-solid border-white active:bg-lime-700 md:mt-52">
                     <h1>Log out</h1>

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer("id_obat");
             $table->integer("jumlah_obat");
             $table->integer("flag");
+            $table->boolean("transaksi")->default(false); // Nilai default diatur sebagai false
             $table->timestamps();
         });
     }

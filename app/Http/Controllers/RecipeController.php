@@ -123,8 +123,27 @@ class RecipeController extends Controller
 
         public function getRecipeById($id)
     {
-        $recipe = recipe::find($id);
+        $recipe = recipe::with('obat')->find($id);
 
-        return response()->json($recipe);
+        if (!$recipe) {
+            return response()->json(['error' => 'Recipe not found'], 404);
+        }
+
+        $data = [
+            'id' => $recipe->id,
+            'date' => $recipe->date,
+            'nama_pasien' => $recipe->nama_pasien,
+            'nama_dokter' => $recipe->nama_dokter,
+            'id_obat' => $recipe->id_obat,
+            'harga' => $recipe->harga,
+            'jumlah_obat' => $recipe->jumlah_obat,
+            'obat' => [
+                'id' => $recipe->obat->id,
+                'nama_obat' => $recipe->obat->nama_obat, 
+                'harga' => $recipe->obat->harga, 
+            ],
+        ];
+
+        return response()->json($data);
     }
 }

@@ -50,7 +50,7 @@
                         Kelola Laporan
                     </div>
                 </a>
-                <a href="#">
+                <a href="{{ route('logout') }}">
                     <div
                         class="hidden md:block bg-white h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer active:bg-slate-400 mt-5">
                         Logout

@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer("no")->unique();
-            $table->date("date");
-            $table->string("nama_kasir");
+            $table->bigInteger("no")->unique();
+            $table->dateTime("date");
             $table->bigInteger("total_bayar");
             $table->integer("id_user");
             $table->integer("id_drug");

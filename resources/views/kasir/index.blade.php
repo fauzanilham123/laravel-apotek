@@ -28,7 +28,7 @@
                     TRANSAKSI
                 </h1>
             </div>
-            <a href="/logout">
+            <a href="{{ route('logout') }}">
                 <div
                     class="w-[70px] p-1 bg-white md:mx-auto rounded-md border-2 border-solid active:bg-slate-300 md:mt-52">
                     <h1>Log out</h1>
@@ -40,13 +40,14 @@
                 <h1 class="font-bold text-center">Form Transaksi</h1>
             </div>
             <div class="ml-3">
-                <form action="">
+                <form action="{{ route('kasir.store') }}" method="POST">
+                    @csrf
                     <div class="md:flex justify-center items-start">
                         <div class="md:mr-24 mr-24">
                             <div class="border-solid border-b-2 border-slate-400">
                                 <label htmlFor="nama">
                                     <h1 class="font-semibold">No Resep</h1>
-                                    <select id="nama" class="w-72 focus:outline-none" name="no_resep"
+                                    <select id="nama" class="w-72 focus:outline-none" name="no_resep" required
                                         onchange="populateForm()">
                                         <option value="" disabled selected>Pilih No Resep</option>
                                         @foreach ($recipes as $resep)
@@ -56,24 +57,21 @@
                                 </label>
                             </div>
                             <div class="mt-2 border-solid border-b-2 border-slate-400">
-                                <label htmlFor="expired_date">
+                                <label htmlFor="date">
                                     <h1 class="font-semibold">Tanggal Resep</h1>
-                                    <input type="date" id="expired_date" class="w-72 focus:outline-none"
-                                        placeholder="masukkan no resep" />
+                                    <input type="date" id="date" class="w-72 focus:outline-none" readonly />
                                 </label>
                             </div>
                             <div class="mt-2 border-solid border-b-2 border-slate-400">
                                 <label htmlFor="name">
                                     <h1 class="font-semibold">Nama Pasien</h1>
-                                    <input type="text" id="name" class="w-72 focus:outline-none"
-                                        placeholder="masukkan nama pasien" />
+                                    <input type="text" id="name" class="w-72 focus:outline-none" readonly />
                                 </label>
                             </div>
                             <div class="mt-2 border-solid border-b-2 border-slate-400">
-                                <label htmlFor="jumlah">
+                                <label htmlFor="nama_dokter">
                                     <h1 class="font-semibold">Nama Dokter</h1>
-                                    <input type="text" id="jumlah" class="w-72 focus:outline-none"
-                                        placeholder="masukkan nama dokter" />
+                                    <input type="text" id="nama_dokter" class="w-72 focus:outline-none" readonly />
                                 </label>
                             </div>
                         </div>
@@ -82,28 +80,40 @@
                             <div class="border-solid border-b-2 border-slate-400">
                                 <label htmlFor="nama_obat">
                                     <h1 class="font-semibold">Nama Obat</h1>
-                                    <input type="text" id="nama_obat" class="w-72 focus:outline-none"
-                                        placeholder="masukkan nama obat" />
+                                    <input type="text" id="nama_obat" class="w-72 focus:outline-none" readonly />
                                 </label>
                             </div>
                             <div class="mt-2 border-solid border-b-2 border-slate-400">
                                 <label htmlFor="harga">
                                     <h1 class="font-semibold">Harga</h1>
                                     <input type="text" id="harga" class="w-72 focus:outline-none"
-                                        placeholder="masukkan Harga" />
+                                        name="total_bayar" required readonly />
                                 </label>
                             </div>
                             <div class="mt-2 border-solid border-b-2 border-slate-400">
                                 <label htmlFor="quantity">
                                     <h1 class="font-semibold">Quantity</h1>
-                                    <input type="text" id="quantity" class="w-72 focus:outline-none"
-                                        placeholder="masukkan quantity" />
+                                    <input type="text" id="quantity" class="w-72 focus:outline-none" readonly />
+                                </label>
+                            </div>
+                            <div class="mt-2 border-solid border-b-2 border-slate-400 hidden">
+                                <label htmlFor="id_drug">
+                                    <h1 class="font-semibold">id_drug</h1>
+                                    <input type="number" id="id_drug" class="w-72 focus:outline-none" name="id_drug"
+                                        readonly />
+                                </label>
+                            </div>
+                            <div class="mt-2 border-solid border-b-2 border-slate-400 hidden">
+                                <label htmlFor="id_recipe">
+                                    <h1 class="font-semibold">id_recipe</h1>
+                                    <input type="number" id="id_recipe" class="w-72 focus:outline-none"
+                                        name="id_recipe" readonly />
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="mt-2 md:ml-28">
-                        <input type="button" value="Tambah"
+                        <input type="submit" value="Tambah"
                             class="bg-slate-300 p-1 border active:bg-slate-500 cursor-pointer rounded-md" />
                     </div>
                 </form>
@@ -162,12 +172,6 @@
                                     @sortablelink('jumlah_obat', 'Jumlah Obat')
                                 </p>
                             </th>
-                            <th class="p-4 border-b border-gray-300 bg-gray-200">
-                                <p
-                                    class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                                    aksi
-                                </p>
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -220,25 +224,6 @@
 
                                     </p>
                                 </td>
-                                <td class="p-4 border-b border-blue-gray-50">
-                                    <form action="{{ route('resep.destroy', $recipe->id) }}" method="POST"
-                                        onsubmit="return confirm('Apakah Anda Yakin ?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <a href="{{ route('resep.edit', $recipe->id) }}">
-                                            <p
-                                                class="inline font-sans text-sm antialiased font-normal leading-normal text-blue-700">
-                                                Edit
-                                            </p>
-                                        </a>
-                                        <button type="submit" href="#">
-                                            <p
-                                                class="inline font-sans text-sm antialiased font-normal leading-normal text-red-700">
-                                                Hapus
-                                            </p>
-                                        </button>
-                                    </form>
-                                </td>
                             </tr>
                         @empty
                         @endforelse
@@ -247,16 +232,15 @@
                 <div class="my-2 mx-auto">{{ $recipes->Links() }}</div>
             </div>
             <div class="mt-3 ml-28">
-                <h1>24000</h1>
+                <h1 id="bayar"></h1>
                 <div class="mt-3 flex">
-                    <h1 class="rounded-md bg-slate-200 p-1 w-min cursor-pointer">
-                        Bayar
-                    </h1>
-                    <input type="text" class="ml-3 focus:outline-none border-solid border-b-2 border-slate-400" />
+                    <input type="submit" value="bayar"
+                        class="rounded-md active:border-slate-600 bg-slate-200 p-1 w-min cursor-pointer" />
+                    <input type="text" class="ml-3 focus:outline-none border-solid border-b-2 border-slate-400 ">
                 </div>
                 <div class="mt-3 flex">
                     <p>Kembali</p>
-                    <p class="ml-3">7000</p>
+                    <p class="ml-3" id="kembali"></p>
                 </div>
             </div>
         </div>
@@ -269,13 +253,17 @@
             fetch('/get-recipe/' + selectedRecipeId)
                 .then(response => response.json())
                 .then(data => {
+                    $harga = data.obat.harga * data.jumlah_obat
                     // Mengisi nilai formulir dengan data resep yang diterima
-                    document.getElementById('expired_date').value = data.date;
+                    document.getElementById('date').value = data.date;
                     document.getElementById('name').value = data.nama_pasien;
-                    document.getElementById('jumlah').value = data.nama_dokter;
-                    document.getElementById('nama_obat').value = data.id_obat;
-                    document.getElementById('harga').value = data.harga;
+                    document.getElementById('nama_dokter').value = data.nama_dokter;
+                    document.getElementById('nama_obat').value = data.obat.nama_obat;
+                    document.getElementById('harga').value = "Rp" + $harga;
+                    document.getElementById('bayar').innerText = $harga;
                     document.getElementById('quantity').value = data.jumlah_obat;
+                    document.getElementById('id_recipe').value = data.id;
+                    document.getElementById('id_drug').value = data.obat.id;
                 });
         }
     </script>
