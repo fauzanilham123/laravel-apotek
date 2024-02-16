@@ -102,9 +102,27 @@ class RecipeController extends Controller
             'nama_dokter' => 'required',
             'id_obat' => 'required',
             'nama_pasien' => 'required',
-            'jumlah_obat' => 'required',
+            'jumlah_obat' => 'required|numeric|min:1',
         ]);
                 $recipes = recipe::findOrFail($id);
+
+                 // Dapatkan jumlah obat sebelum diupdate
+                $jumlah_obat_sebelumnya = $recipes->jumlah_obat;
+
+                // Hitung selisih jumlah obat baru dengan jumlah obat sebelumnya
+                $selisih_jumlah_obat = $request->jumlah_obat - $jumlah_obat_sebelumnya;
+
+                // Mengambil jumlah obat yang tersedia dari tabel obat
+                $drug = Drugs::find($recipes->id_obat);
+                $jumlah_obat_tersedia = $drug->jumlah;
+
+                 // Memeriksa apakah jumlah_obat yang diminta melebihi jumlah obat yang tersedia
+                if ($selisih_jumlah_obat > $jumlah_obat_tersedia) {
+                    return redirect()->route('resep.edit', $id)
+                        ->with(['error' => 'Jumlah obat melebihi stok yang tersedia.'])
+                        ->withInput($request->all())
+                        ->with('jumlah_obat_tersedia', $jumlah_obat_tersedia);
+                }
 
          //update post without image
             $recipes->update([
@@ -115,6 +133,12 @@ class RecipeController extends Controller
                 'nama_pasien' => $request->nama_pasien,
                 'jumlah_obat' => $request->jumlah_obat,
             ]);
+
+               // Update jumlah obat di tabel obat
+                $drug->update([
+                    'jumlah' => $jumlah_obat_tersedia - $selisih_jumlah_obat,
+                ]);
+                
         return redirect()->route('resep.index')-> with(['success' => 'Data Berhasil Disimpan!']);
 
     }

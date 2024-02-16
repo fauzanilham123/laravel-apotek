@@ -230,16 +230,18 @@
                 </table>
                 <div class="my-2 mx-auto">{{ $recipes->Links() }}</div>
             </div>
-            <div class="mt-3 ml-28">
-                <h1 id="bayar"></h1>
+            <div id="kasir" class="mt-3 ml-28 hidden">
+                <h1 class="inline">total bayar: </h1>
+                <h1 id="bayar" class="inline"></h1>
                 <div class="mt-3 flex">
-                    <input type="submit" value="bayar"
-                        class="rounded-md active:border-slate-600 bg-slate-200 p-1 w-min cursor-pointer" />
-                    <input type="text" class="ml-3 focus:outline-none border-solid border-b-2 border-slate-400 ">
+                    <button type="button" onclick="hitungKembali()"
+                        class="rounded-md bg-slate-200 active:border-slate-600 p-1 w-min cursor-pointer"> bayar
+                    </button>
+                    <input type="number" id="inputBayar"
+                        class="ml-3 focus:outline-none border-solid border-b-2 border-slate-400 " />
                 </div>
                 <div class="mt-3 flex">
-                    <p>Kembali</p>
-                    <p class="ml-3" id="kembali"></p>
+                    <p class="" id="kembali"></p>
                 </div>
             </div>
         </div>
@@ -264,6 +266,34 @@
                     document.getElementById('id_recipe').value = data.id;
                     document.getElementById('id_drug').value = data.obat.id;
                 });
+
+            document.getElementById('kasir').style.display = 'block';
+
+        }
+
+        function hitungKembali() {
+            // Mengubah nilai pada elemen dengan id 'bayar'
+            let totalBelanja = parseFloat(document.getElementById('bayar').innerText);
+
+            // Mendapatkan nilai yang diinputkan
+            let bayar = parseFloat(document.getElementById('inputBayar').value);
+
+            // Contoh penghitungan kembalian (Anda dapat menyesuaikan sesuai kebutuhan)
+            let kembalian = bayar - totalBelanja;
+
+            if (kembalian === 0) {
+                document.getElementById('kembali').innerText = "Uang Pas";
+            } else if (kembalian > 0) {
+                document.getElementById('kembali').innerText = "Kembalian: " + formatAngka(kembalian);
+            } else {
+                // Jika kembalian kurang dari 0
+                document.getElementById('kembali').innerText = "Uang Kurang: " + formatAngka(-kembalian);
+            }
+        }
+
+        // Fungsi untuk memformat angka dengan pemisah ribuan
+        function formatAngka(angka) {
+            return angka.toLocaleString('id-ID');
         }
     </script>
 </body>

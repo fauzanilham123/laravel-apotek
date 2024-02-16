@@ -102,6 +102,13 @@
                                         placeholder="masukkan jumlah_obat" name="jumlah_obat" required />
                                 </label>
                             </div>
+                            @if (session('error'))
+                                <div class="bg-red-500 text-white px-2 mt-2">
+                                    {{ session('error') }}
+                                    <br>
+                                    Obat tersisa: {{ session('jumlah_obat_tersedia') }}
+                                </div>
+                            @endif
                         </div>
 
                     </div>
