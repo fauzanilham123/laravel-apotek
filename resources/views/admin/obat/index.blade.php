@@ -61,8 +61,14 @@
             </form>
         </div>
         <div class="md:ml-[700px] mb-1 mt-3 md:mt-0">
-            <h1 class="inline mr-2">Cari</h1>
-            <input type="text" class="focus:outlsine-none border-solid border-b-2 border-slate-400" />
+            <form action="" method="get">
+                <label htmlFor="cari">
+                    <h1 class="inline mr-2">Cari</h1>
+                    <input type="text" class="focus:outline-none border-solid border-b-2 border-slate-400" id="cari"
+                        name="cari" value="{{ request('cari') }}" />
+                    <input type="button" value="">
+                </label>
+            </form>
         </div>
         <div
             class="relative flex flex-col md:max-w-screen md:max-h-screen h-72 overflow-scroll text-gray-700 bg-white shadow-md rounded-xl bg-clip-border ">

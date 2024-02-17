@@ -13,8 +13,22 @@ class DrugsController extends Controller
      */
     public function index()
     {
-        //
-        $drugs = Drugs::sortable()->where('flag', 1)->paginate(10);
+        $drugs = Drugs::query();
+        if(request('cari')) {
+            $drugs->where(function($query) {
+            foreach($query->getModel()->getFillable() as $column) {
+                $query->orWhere($column, 'LIKE', "%".request('cari')."%");
+            }
+            });
+            // Filter hanya yang flag 1
+            $drugs->where('flag', 1);
+        } else {
+            // Default hanya tampilkan flag 1
+            $drugs->where('flag', 1);
+        }
+        $drugs = $drugs->sortable()
+                        ->where('flag',1)
+                        ->paginate(10);
 
         //render view with drugs
         return view('admin.obat.index', compact('drugs'));

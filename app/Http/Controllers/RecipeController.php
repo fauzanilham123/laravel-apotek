@@ -14,7 +14,20 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = recipe::sortable()->where('flag', 1)->where('transaksi', 0)->paginate(10);
+        $recipes = recipe::query();
+                if(request('cari')) {
+                    $recipes->where(function($query) {
+                    foreach($query->getModel()->getFillable() as $column) {
+                        $query->orWhere($column, 'LIKE', "%".request('cari')."%");
+                    }
+                    });
+                    // Filter hanya yang flag 1
+                    $recipes->where('flag', 1);
+                } else {
+                    // Default hanya tampilkan flag 1
+                    $recipes->where('flag', 1);
+                }
+        $recipes = $recipes->sortable()->where('flag',1)->paginate(10);
         $drugs = drugs::get()->where('flag', 1);
 
         //render view with recipes

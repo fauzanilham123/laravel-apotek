@@ -16,8 +16,25 @@ class TransactionController extends Controller
     public function index()
     {
         //
-        $transactions = Transaction::sortable()->where('flag',1)->paginate(10);
+        // Ambil data dari form input
+    $dariTanggal = (request('dari_tanggal'));
+    $sampaiTanggal = (request('sampai_tanggal'));
 
+    // Tambahkan satu hari ke `sampai_tanggal`
+    if ($sampaiTanggal) {
+        $sampaiTanggal = date('Y-m-d', strtotime($sampaiTanggal . ' +1 day'));
+    }
+
+    // Query dasar tanpa filter tanggal
+    $transactions = Transaction::sortable()->where('flag', 1);
+
+    // Tambahkan filter berdasarkan tanggal jika input tersedia
+    if ($dariTanggal && $sampaiTanggal) {
+        $transactions->whereBetween('date', [$dariTanggal, $sampaiTanggal]);
+    }
+
+    // Ambil data yang sesuai dengan kondisi-kondisi yang telah ditambahkan
+    $transactions = $transactions->paginate(10);
         //render view with transactions
         return view('admin.laporan.index', compact('transactions'));
     }

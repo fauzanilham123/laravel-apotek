@@ -20,9 +20,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-        //get posts
-        $users = user::sortable()->paginate(10);
+        $users = User::query();
+
+        if(request('cari')) {
+            foreach($users->getModel()->getFillable() as $column) {
+                $users->orWhere($column, 'LIKE',  "%".request('cari')."%");
+            }
+        }
+
+        $users = $users->sortable()->paginate(10);
 
         //render view with users
         return view('admin.user.index', compact('users'));

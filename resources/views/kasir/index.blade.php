@@ -118,11 +118,14 @@
                     </div>
                 </form>
                 <div class="md:ml-[700px] mb-1 mt-3 md:mt-0">
-                    <label htmlFor="cari">
-                        <h1 class="inline mr-2">Cari</h1>
-                        <input type="text" class="focus:outline-none border-solid border-b-2 border-slate-400"
-                            id="cari" />
-                    </label>
+                    <form action="" method="get">
+                        <label htmlFor="cari">
+                            <h1 class="inline mr-2">Cari</h1>
+                            <input type="text" class="focus:outline-none border-solid border-b-2 border-slate-400"
+                                id="cari" name="cari" value="{{ request('cari') }}" />
+                            <input type="submit" value="">
+                        </label>
+                    </form>
                 </div>
             </div>
             <div
@@ -294,6 +297,11 @@
         // Fungsi untuk memformat angka dengan pemisah ribuan
         function formatAngka(angka) {
             return angka.toLocaleString('id-ID');
+        }
+
+        function hapusFormatAngka(angkaFormatted) {
+            // Menghapus tanda baca dan spasi dari angka yang diformat
+            return angkaFormatted.replace(/\D/g, '');
         }
     </script>
 </body>
