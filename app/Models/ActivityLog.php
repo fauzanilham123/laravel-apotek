@@ -7,18 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
 
-class LogActivity extends Model
+class ActivityLog extends Model
 {
     use HasFactory,Sortable;
+
+    protected $table = 'activity_log';
+
     protected $fillable = [
-        'id_user',
+        'id',
+        'causer_id',
         'time',
-        'activity',
+        'description',
     ];
     public $sortable = [
         'id',
-        'id_user',
+        'causer_id',
         'time',
-        'activity',
+        'description',
     ];
+
+    public function causer() 
+{
+    return $this->belongsTo(User::class, 'causer_id');
+}
 }

@@ -8,7 +8,9 @@
     <title>Apoteker</title>
     <link rel="shortcut icon" href="{{ asset('storage/images/apoteker.png') }}" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     @vite('resources/css/app.css')
 </head>
@@ -78,15 +80,25 @@
                                 <label htmlFor="nama_obat">
                                     <h1 class="font-semibold">Nama Obat</h1>
                                     <select id="nama_obat" class="w-72 focus:outline-none" name="nama_obat" required>
-                                        <option value="" disabled selected>Pilih obat
-                                        </option>
+                                        <option value="" disabled {{ old('nama_obat') ? '' : 'selected' }}>Pilih
+                                            obat </option>
                                         @foreach ($drugs as $drug)
-                                            <option value="{{ $drug->id }} ">
-                                                {{ $drug->nama_obat }}</option>
+                                            <option value="{{ $drug->id }}"
+                                                {{ old('nama_obat') == $drug->id ? 'selected' : '' }}>
+                                                {{ $drug->nama_obat }}
+                                            </option>
                                         @endforeach
+
                                     </select>
                                 </label>
                             </div>
+                            @if (session('kedaluwarsa'))
+                                <div class="bg-red-500 text-white px-2 mt-2">
+                                    {{ session('kedaluwarsa') }}
+                                    <br>
+                                    Pada tanggal: {{ session('expired_date') }}
+                                </div>
+                            @endif
                             <div class="mt-5 border-solid border-b-2 border-slate-400">
                                 <label htmlFor="nama_pasien">
                                     <h1 class="font-semibold">Nama Pasien</h1>
@@ -103,7 +115,6 @@
                                         value="{{ old('jumlah_obat') }}" />
                                 </label>
                             </div>
-                            <!-- Di dalam file blade view untuk halaman index -->
                             @if (session('error'))
                                 <div class="bg-red-500 text-white px-2 mt-2">
                                     {{ session('error') }}
@@ -236,20 +247,29 @@
                                 </td>
                                 <td class="p-4 border-b border-blue-gray-50">
                                     <form action="{{ route('resep.destroy', $recipe->id) }}" method="POST"
-                                        onsubmit="return confirm('Apakah Anda Yakin ?');">
+                                        class="flex" onsubmit="return confirm('Apakah Anda Yakin ?');">
                                         @csrf
                                         @method('DELETE')
                                         <a href="{{ route('resep.edit', $recipe->id) }}">
-                                            <p
-                                                class="inline font-sans text-sm antialiased font-normal leading-normal text-blue-700">
-                                                Edit
-                                            </p>
+                                            <svg class="h-5 w-5 text-blue-500" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" />
+                                                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                                                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                                                <line x1="16" y1="5" x2="19" y2="8" />
+                                            </svg>
                                         </a>
                                         <button type="submit" href="#">
-                                            <p
-                                                class="inline font-sans text-sm antialiased font-normal leading-normal text-red-700">
-                                                Hapus
-                                            </p>
+                                            <svg class="h-5 w-5 text-red-500" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6" />
+                                                <path
+                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                                <line x1="10" y1="11" x2="10" y2="17" />
+                                                <line x1="14" y1="11" x2="14" y2="17" />
+                                            </svg>
                                         </button>
                                     </form>
                                 </td>
@@ -257,10 +277,25 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="my-2 mx-auto">{{ $recipes->Links() }}</div>
+                <div class="my-2">{{ $recipes->Links('pagination::tailwind') }}</div>
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        //message with toastr
+        @if (session()->has('success'))
+            toastr.success('{{ session('success') }}', 'BERHASIL!');
+        @elseif (session()->has('error'))
+            toastr.error('{{ session('error') }}', 'GAGAL!');
+        @elseif (session()->has('kedaluwarsa'))
+            toastr.error('{{ session('kedaluwarsa') }}', 'GAGAL!');
+        @endif
+    </script>
 </body>
 
 </html>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -53,6 +55,7 @@ class UserController extends Controller
         'username' => $request->username,
         'password' => Hash::make($request->password),
     ]);
+    activity()->causedBy(Auth::user())->log('Menambahkan user ' . $request->name . ' dengan role ' . $request->role);
     return redirect()->route('user.index')-> with(['success' => 'Data Berhasil Disimpan!']);
     }
 
@@ -77,7 +80,7 @@ class UserController extends Controller
             'username' => 'required|unique:users,username,'. $id,
             'password',
         ]);
-                $users = user::findOrFail($id);
+            $users = user::findOrFail($id);
 
             $users->update([
         'role' => $request->role,
@@ -87,8 +90,8 @@ class UserController extends Controller
         'username' => $request->username,
         'password' => Hash::make($request->password),
     ]);
+    activity()->causedBy(Auth::user())->log('Mengedit user pada id ' . $id );
         return redirect()->route('user.index')-> with(['success' => 'Data Berhasil Disimpan!']);
-
     }
 
     /**
@@ -111,7 +114,7 @@ class UserController extends Controller
     
         // Mengubah nilai flag menjadi 0
         $user->delete();
-    
+        activity()->causedBy(Auth::user())->log('Menghapus user pada id ' . $id );
         return redirect()->route('user.index')->with(['success' => 'Data berhasil dihapus']);
     }
 }

@@ -8,7 +8,9 @@
     <title>kasir</title>
     <link rel="shortcut icon" href="storage/images/kasir.png" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     @vite('resources/css/app.css')
 </head>
@@ -47,7 +49,7 @@
                             <div class="border-solid border-b-2 border-slate-400">
                                 <label htmlFor="nama">
                                     <h1 class="font-semibold">No Resep</h1>
-                                    <select id="nama" class="w-72 focus:outline-none" name="no_resep" required
+                                    <select id="nama" class="w-72 focus:outline-none" name="no" required
                                         onchange="populateForm()">
                                         <option value="" disabled selected>Pilih No Resep</option>
                                         @foreach ($recipes as $resep)
@@ -108,6 +110,13 @@
                                     <h1 class="font-semibold">id_recipe</h1>
                                     <input type="number" id="id_recipe" class="w-72 focus:outline-none"
                                         name="id_recipe" readonly />
+                                </label>
+                            </div>
+                            <div class="mt-2 border-solid border-b-2 border-slate-400 hidden">
+                                <label htmlFor="id_recipe">
+                                    <h1 class="font-semibold">no_resep</h1>
+                                    <input type="text" id="no_resep" class="w-72 focus:outline-none"
+                                        name="no_resep" readonly />
                                 </label>
                             </div>
                         </div>
@@ -231,7 +240,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="my-2 mx-auto">{{ $recipes->Links() }}</div>
+                <div class="my-2">{{ $recipes->Links('pagination::tailwind') }}</div>
             </div>
             <div id="kasir" class="mt-3 ml-28 hidden">
                 <h1 class="inline">total bayar: </h1>
@@ -268,6 +277,7 @@
                     document.getElementById('quantity').value = data.jumlah_obat;
                     document.getElementById('id_recipe').value = data.id;
                     document.getElementById('id_drug').value = data.obat.id;
+                    document.getElementById('no_resep').value = data.no_resep;
                 });
 
             document.getElementById('kasir').style.display = 'block';
@@ -303,6 +313,19 @@
             // Menghapus tanda baca dan spasi dari angka yang diformat
             return angkaFormatted.replace(/\D/g, '');
         }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        //message with toastr
+        @if (session()->has('success'))
+            toastr.success('{{ session('success') }}', 'BERHASIL!');
+        @elseif (session()->has('error'))
+            toastr.error('{{ session('error') }}', 'GAGAL!');
+        @endif
     </script>
 </body>
 

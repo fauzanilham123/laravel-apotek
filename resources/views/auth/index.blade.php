@@ -7,7 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <link rel="shortcut icon" href="{{ asset('storage/images/apotek.png') }}" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite('resources/css/app.css')
 
 </head>
@@ -47,7 +49,7 @@
                             <p class="font-semibold mb-2">Username</p>
                             <div class="border-solid border-b-2 border-slate-400 w-full">
                                 <input type="text" placeholder="masukkan username" class="focus:outline-none w-full"
-                                    id="nama" name="username" required />
+                                    id="nama" name="username" value="{{ old('username') }}" required />
                             </div>
                         </label>
                     </div>
@@ -56,7 +58,7 @@
                             <p class="font-semibold mb-2">Password</p>
                             <div class="border-solid border-b-2 border-slate-400 ">
                                 <input type="password" placeholder="masukkan password" class="focus:outline-none w-full"
-                                    id="nama" name="password" required />
+                                    id="nama" name="password" value="{{ old('password') }}" required />
                             </div>
                         </label>
                     </div>
@@ -70,6 +72,19 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        //message with toastr
+        @if (session()->has('success'))
+            toastr.success('{{ session('success') }}', 'BERHASIL!');
+        @elseif (session()->has('error'))
+            toastr.error('{{ session('error') }}', 'GAGAL!');
+        @endif
+    </script>
 </body>
 
 </html>

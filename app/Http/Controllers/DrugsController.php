@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Drugs;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DrugsController extends Controller
 {
@@ -64,6 +65,8 @@ class DrugsController extends Controller
         'harga' => $request->harga,
         'flag' => 1,
     ]);
+    activity()->causedBy(Auth::user())->log('Menambahkan obat ' . $request->name . ' dengan kode ' . $request->kode_obat);
+
     return redirect()->route('obat.index')-> with(['success' => 'Data Berhasil Disimpan!']);
     }
 
@@ -108,6 +111,7 @@ class DrugsController extends Controller
                 'jumlah' => $request->jumlah,
                 'harga' => $request->harga,
             ]);
+        activity()->causedBy(Auth::user())->log('Mengedit obat pada id ' . $id);
         return redirect()->route('obat.index')-> with(['success' => 'Data Berhasil Disimpan!']);
 
     }
@@ -122,7 +126,7 @@ class DrugsController extends Controller
     
         // Mengubah nilai flag menjadi 0
         $drugs->update(['flag' => 0]);
-    
+        activity()->causedBy(Auth::user())->log('Menghapus obat pada id ' . $id);
         return redirect()->route('obat.index')->with(['success' => 'Data berhasil dihapus']);
     }
 }

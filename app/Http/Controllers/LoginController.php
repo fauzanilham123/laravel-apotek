@@ -29,16 +29,19 @@ class LoginController extends Controller
             $user = Auth::user();
 
             if($user->role === 'admin') {
-                return redirect()->intended('/');
+                activity()->causedBy($user)->log('Login');
+                return redirect()->intended('/')->with("success", 'Login sebagai admin berhasil!');;
 
-            } else if($user->role === 'apoteker') {  
-                return redirect()->intended('/resep');
+            } else if($user->role === 'apoteker') { 
+                activity()->causedBy($user)->log('Login');
+                return redirect()->intended('/resep')->with("success", 'Login sebagai apoteker berhasil!');
     
             } else if($user->role === 'kasir') {
-                return redirect()->intended('/kasir');
+                activity()->causedBy($user)->log('Login');
+                return redirect()->intended('/kasir')->with("success", 'Login sebagai kasir berhasil!');
                 }
             }
-        return back()->with("loginError", 'Login gagal! username atau password salah');
+        return back()->with("error", 'Login gagal! username atau password salah');
     }
 
             public function logout(Request $request): RedirectResponse
@@ -49,6 +52,6 @@ class LoginController extends Controller
         
             $request->session()->regenerateToken();
         
-            return redirect('/login');
+            return redirect('/login')->with("success", 'Logout berhasil');
         }
 }

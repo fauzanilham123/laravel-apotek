@@ -6,6 +6,8 @@ use App\Models\recipe;
 use App\Models\Drugs;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class RecipeController extends Controller
 {
@@ -65,6 +67,15 @@ class RecipeController extends Controller
         if ($request->jumlah_obat > $jumlah_obat_tersedia) {
             return redirect()->route('resep.index')->with(['error' => 'Jumlah obat melebihi stok yang tersedia.'])->withInput($request->all())->with('jumlah_obat_tersedia', $jumlah_obat_tersedia);
         }
+
+        $expired_date = $drug->expired_date;
+
+        $today = date('Y-m-d');
+
+        if ($expired_date < $today) {
+            return redirect()->route('resep.index')->with(['kedaluwarsa' => 'Obat sudah kedaluwarsa.'])->withInput($request->all())->with('expired_date', $expired_date); 
+        }
+        
         recipe::create([
         'no' => $request->no,
         'date' => $request->date,
@@ -77,7 +88,7 @@ class RecipeController extends Controller
 
     // Mengurangi jumlah obat yang tersedia di tabel obat
     $drug->update(['jumlah' => $jumlah_obat_tersedia - $request->jumlah_obat]);
-
+    activity()->causedBy(Auth::user())->log('Menambahkan resep dengan no resep ' . $request->no);
     return redirect()->route('resep.index')->with(['success' => 'Data Berhasil Disimpan!']);
     }
 
@@ -98,7 +109,6 @@ class RecipeController extends Controller
         $recipes = recipe::find($id);
         $drugs = drugs::get()->where('flag', 1);
         $selectedDrugId = $recipes->id_obat;
-
 
         return view('apotek.edit', compact('recipes','drugs','selectedDrugId'));
     }
@@ -126,7 +136,7 @@ class RecipeController extends Controller
                 $selisih_jumlah_obat = $request->jumlah_obat - $jumlah_obat_sebelumnya;
 
                 // Mengambil jumlah obat yang tersedia dari tabel obat
-                $drug = Drugs::find($recipes->id_obat);
+                $drug = Drugs::find($request->id_obat);
                 $jumlah_obat_tersedia = $drug->jumlah;
 
                  // Memeriksa apakah jumlah_obat yang diminta melebihi jumlah obat yang tersedia
@@ -135,6 +145,13 @@ class RecipeController extends Controller
                         ->with(['error' => 'Jumlah obat melebihi stok yang tersedia.'])
                         ->withInput($request->all())
                         ->with('jumlah_obat_tersedia', $jumlah_obat_tersedia);
+                }
+
+                $expired_date = $drug->expired_date;
+                $today = date('Y-m-d');
+
+                if ($expired_date < $today) {
+                    return redirect()->route('resep.edit', $id)->with(['kedaluwarsa' => 'Obat sudah kedaluwarsa.'])->withInput($request->all())->with('expired_date', $expired_date); 
                 }
 
          //update post without image
@@ -151,7 +168,8 @@ class RecipeController extends Controller
                 $drug->update([
                     'jumlah' => $jumlah_obat_tersedia - $selisih_jumlah_obat,
                 ]);
-                
+                activity()->causedBy(Auth::user())->log('Mengedit resep pada id ' . $id);
+
         return redirect()->route('resep.index')-> with(['success' => 'Data Berhasil Disimpan!']);
 
     }
@@ -161,12 +179,18 @@ class RecipeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
         $recipes = recipe::findOrFail($id);
-    
-        // Mengubah nilai flag menjadi 0
+  
+        $jumlah_obat = $recipes->jumlah_obat;
+        $id_obat = $recipes->id_obat;
+
+        $obat = Drugs::findOrFail($id_obat);
+        $obat->jumlah += $jumlah_obat;
+        $obat->save();
+
         $recipes->update(['flag' => 0]);
-    
+        activity()->causedBy(Auth::user())->log('Menghapus resep pada id ' . $id);
+
         return redirect()->route('resep.index')->with(['success' => 'Data berhasil dihapus']);
     }
 
@@ -180,6 +204,7 @@ class RecipeController extends Controller
 
         $data = [
             'id' => $recipe->id,
+            'no_resep' => $recipe->no,
             'date' => $recipe->date,
             'nama_pasien' => $recipe->nama_pasien,
             'nama_dokter' => $recipe->nama_dokter,

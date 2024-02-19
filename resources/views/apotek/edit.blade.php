@@ -8,6 +8,9 @@
     <title>Admin</title>
     <link rel="shortcut icon" href="{{ asset('storage/images/apoteker.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite('resources/css/app.css')
 </head>
 
@@ -84,8 +87,14 @@
                                         @endforeach
                                     </select>
                                 </label>
-
                             </div>
+                            @if (session('kedaluwarsa'))
+                                <div class="bg-red-500 text-white px-2 mt-2">
+                                    {{ session('kedaluwarsa') }}
+                                    <br>
+                                    Pada tanggal: {{ session('expired_date') }}
+                                </div>
+                            @endif
                             <div class="mt-5 border-solid border-b-2 border-slate-400">
                                 <label htmlFor="nama_pasien">
                                     <h1 class="font-semibold">Nama Pasien</h1>
@@ -115,22 +124,30 @@
                     <div class="mt-3">
                         <input type="submit" value="Simpan"
                             class="bg-slate-300 p-1 border active:bg-slate-500 cursor-pointer rounded-md" />
+                        <a href="/resep" class="bg-slate-300 p-1 border active:bg-slate-500 cursor-pointer rounded-md">
+                            Kembali
+                        </a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        //message with toastr
+        @if (session()->has('success'))
+            toastr.success('{{ session('success') }}', 'BERHASIL!');
+        @elseif (session()->has('error'))
+            toastr.error('{{ session('error') }}', 'GAGAL!');
+        @elseif (session()->has('kedaluwarsa'))
+            toastr.error('{{ session('kedaluwarsa') }}', 'GAGAL!');
+        @endif
+    </script>
 </body>
 
 </html>
-<script>
-    //message with toastr
-    @if (session()->has('success'))
-
-        toastr.success('{{ session('success') }}', 'BERHASIL!');
-    @elseif (session()->has('error'))
-
-        toastr.error('{{ session('error') }}', 'GAGAL!');
-    @endif
-</script>

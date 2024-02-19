@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LogActivity;
+use App\Models\ActivityLog;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -14,8 +14,18 @@ class LogActivityController extends Controller
     public function index()
     {
         //
+        $dariTanggal = (request('dari_tanggal'));
+        $sampaiTanggal = (request('sampai_tanggal'));
+
+        // Query dasar tanpa filter tanggal
+        $logactivities = ActivityLog::sortable();
+
+        // Tambahkan filter berdasarkan tanggal jika input tersedia
+        if ($dariTanggal && $sampaiTanggal) {
+            $logactivities->whereBetween('time', [$dariTanggal, $sampaiTanggal]);
+        }
         //get posts
-        $logactivities = LogActivity::sortable()->paginate(10);
+        $logactivities = $logactivities->paginate(10);
 
         //render view with logactivities
         return view('admin.logactivity.index', compact('logactivities'));
@@ -40,7 +50,7 @@ class LogActivityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LogActivity $logActivity)
+    public function show(ActivityLog $logActivity)
     {
         //
     }
@@ -48,7 +58,7 @@ class LogActivityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(LogActivity $logActivity)
+    public function edit(ActivityLog $logActivity)
     {
         //
     }
@@ -56,7 +66,7 @@ class LogActivityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LogActivity $logActivity)
+    public function update(Request $request, ActivityLog $logActivity)
     {
         //
     }
@@ -64,7 +74,7 @@ class LogActivityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LogActivity $logActivity)
+    public function destroy(ActivityLog $logActivity)
     {
         //
     }

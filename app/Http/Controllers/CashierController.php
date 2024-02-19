@@ -26,7 +26,7 @@ class CashierController extends Controller
                     // Default hanya tampilkan flag 1
                     $recipes->where('flag', 1)->where('transaksi', 0);
                 }
-        $recipes = $recipes->sortable()->where('flag',1)->paginate(10);
+        $recipes = $recipes->sortable()->where('flag',1)->where('transaksi', 0)->paginate(10);
 
         //render view with recipe
         return view('kasir.index', compact('recipes'));
@@ -39,6 +39,7 @@ class CashierController extends Controller
             'total_bayar' => 'required',
             'id_drug' => 'required',
             'id_recipe' => 'required',
+            'no_resep' => 'required',
         ]);
          // Menghapus karakter selain angka dari total_bayar
         $totalBayar = str_replace('Rp', '', $request->total_bayar);
@@ -59,8 +60,9 @@ class CashierController extends Controller
     if ($transaction->id_recipe) {
         recipe::where('id', $transaction->id_recipe)->update(['transaksi' => true]);
     }
+    activity()->causedBy(Auth::user())->log('Melakukan transaksi dengan no_resep ' . $request->no_resep);
 
-    return redirect()->route('kasir.index')-> with(['success' => 'Data Berhasil Disimpan!']);
+    return redirect()->route('kasir.index')-> with(['success' => 'Transaksi berhasil']);
         //
     }
 }

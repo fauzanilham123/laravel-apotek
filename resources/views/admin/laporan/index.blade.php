@@ -73,7 +73,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="my-2 mx-auto">{{ $transactions->Links() }}</div>
+            <div class="my-2">{{ $transactions->Links('pagination::tailwind') }}</div>
 
         </div>
     </div>
