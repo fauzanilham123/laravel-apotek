@@ -73,7 +73,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="my-2">{{ $transactions->Links('pagination::tailwind') }}</div>
+            <div class="my-2">{{ $transactions->appends(request()->except('page'))->Links('pagination::tailwind') }}</div>
 
         </div>
     </div>

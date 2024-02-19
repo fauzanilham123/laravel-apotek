@@ -84,7 +84,7 @@
                 </tbody>
             </table>
             <div class="my-2">
-                {{ $logactivities->links('pagination::tailwind') }}
+                {{ $logactivities->appends(request()->except('page'))->links('pagination::tailwind') }}
             </div>
         </div>
     </div>

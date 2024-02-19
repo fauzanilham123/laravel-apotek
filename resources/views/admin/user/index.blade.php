@@ -80,7 +80,7 @@
                 <form action="" method="get">
                     <label htmlFor="cari">
                         <h1 class="inline mr-2">Cari</h1>
-                        <input type="text" class="focus:outline-none border-solid border-b-2 border-slate-400"
+                        <input type="search" class="focus:outline-none border-solid border-b-2 border-slate-400"
                             id="cari" name="cari" value="{{ request('cari') }}" />
                         <input type="button" value="">
                     </label>
