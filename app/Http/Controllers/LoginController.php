@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 
 
 class LoginController extends Controller
@@ -22,7 +24,13 @@ class LoginController extends Controller
             'username' => ['required'],
             'password' => ['required'],
         ]);
- 
+        
+        $user = user::where('username', $credentials['username'])->first();
+
+        if ($user && $user->flag == 0) {
+            return back()->with("error", 'Akun Anda sudah tidak aktif.');
+        }
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 

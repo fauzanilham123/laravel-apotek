@@ -211,7 +211,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="my-2">{{ $users->Links('pagination::tailwind') }}</div>
+            <div class="my-2">{{ $users->appends(request()->except('page'))->Links('pagination::tailwind') }}</div>
         </div>
     </div>
     <script>

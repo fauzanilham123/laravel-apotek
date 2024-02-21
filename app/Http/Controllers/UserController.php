@@ -22,13 +22,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::query();
-
-        if(request('cari')) {
-            foreach($users->getModel()->getFillable() as $column) {
-                $users->orWhere($column, 'LIKE',  "%".request('cari')."%");
-            }
-        }
+            $users = user::query();
+                if(request('cari')) {
+                    $users->where(function($query) {
+                    foreach($query->getModel()->getFillable() as $column) {
+                        $query->orWhere($column, 'LIKE', "%".request('cari')."%");
+                    }
+                    });
+                    // Filter hanya yang flag 1
+                    $users->where('flag', 1);
+                } else {
+                    // Default hanya tampilkan flag 1
+                    $users->where('flag', 1);
+                }
 
         $users = $users->sortable()->paginate(10);
 
@@ -54,6 +60,7 @@ class UserController extends Controller
         'alamat' => $request->alamat,
         'username' => $request->username,
         'password' => Hash::make($request->password),
+        'flag' => 1,
     ]);
     activity()->causedBy(Auth::user())->log('Menambahkan user ' . $request->name . ' dengan role ' . $request->role);
     return redirect()->route('user.index')-> with(['success' => 'Data Berhasil Disimpan!']);
@@ -99,21 +106,13 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-        $user = user::findOrFail($id);
-        // Periksa apakah user yang akan dihapus adalah admin
-            if ($user->role === 'admin') {
-        // Periksa jumlah admin yang tersisa
-        $remainingAdmins = User::where('role', 'admin')->count();
-
-        // Jika hanya satu admin tersisa, beri pesan error
-            if ($remainingAdmins <= 1) {
-            return redirect()->route('user.index')->with(['error' => 'Tidak dapat menghapus satu-satunya admin yang tersisa.']);
+        // Cek apakah user yang akan dihapus adalah user yang sedang login
+        if ($id == Auth::user()->id) {
+            return redirect()->route('user.index')->with(['error' => 'Anda tidak dapat menghapus akun Anda sendiri.']);
         }
-    }
-    
+        $user = user::findOrFail($id);  
         // Mengubah nilai flag menjadi 0
-        $user->delete();
+        $user->update(['flag' => 0]);
         activity()->causedBy(Auth::user())->log('Menghapus user pada id ' . $id );
         return redirect()->route('user.index')->with(['success' => 'Data berhasil dihapus']);
     }

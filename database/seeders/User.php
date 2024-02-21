@@ -17,28 +17,31 @@ class User extends Seeder
     {
         //
         DB::table('users')->insert([
-            'name' => 'John Doe',
+            'name' => 'admin',
             'username' => 'admin',
             'password' => Hash::make('admin'), 
             'alamat' => 'Jalan ABC No. 123',
             'telepon' => '8123456789',
             'role' => 'admin',
+            'flag' => 1,
         ]);
         DB::table('users')->insert([
-            'name' => 'John Doe',
+            'name' => 'apotker',
             'username' => 'apotek',
             'password' => Hash::make('apotek'), 
             'alamat' => 'Jalan ABC No. 123',
             'telepon' => '8123456789',
             'role' => 'apoteker',
+            'flag' => 1,
         ]);
         DB::table('users')->insert([
-            'name' => 'John Doe',
+            'name' => 'kasir',
             'username' => 'kasir',
             'password' => Hash::make('kasir'), 
             'alamat' => 'Jalan ABC No. 123',
             'telepon' => '8123456789',
             'role' => 'kasir',
+            'flag' => 1,
         ]);
     }
 }

@@ -29,7 +29,7 @@
                         <th class="p-4 border-b border-gray-300 bg-gray-200">
                             <p
                                 class="block font-sans text-sm antialiased font-normal leading-none text-gray-900 opacity-70">
-                                @sortablelink('no', 'No')
+                                @sortablelink('no', 'No Transaksi')
                             </p>
                         </th>
                         <th class="p-4 border-b border-gray-300 bg-gray-200">

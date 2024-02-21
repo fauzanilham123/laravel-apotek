@@ -240,10 +240,11 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="my-2">{{ $recipes->Links('pagination::tailwind') }}</div>
+                <div class="my-2">{{ $recipes->appends(request()->except('page'))->Links('pagination::tailwind') }}
+                </div>
             </div>
             <div id="kasir" class="mt-3 ml-28 hidden">
-                <h1 class="inline">total bayar: </h1>
+                <h1 class="inline">total bayar : </h1>
                 <h1 id="bayar" class="inline"></h1>
                 <div class="mt-3 flex">
                     <button type="button" onclick="hitungKembali()"
