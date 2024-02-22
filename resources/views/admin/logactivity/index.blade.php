@@ -18,7 +18,7 @@
                         name="sampai_tanggal" id="sampai_tanggal" value="{{ request('sampai_tanggal') }}" />
                 </label>
                 <input type="submit" value="Load"
-                    class="relative left-10 bg-slate-300 px-1 border active:bg-slate-500 cursor-pointer rounded-md">
+                    class="relative left-10 bg-slate-300 px-1 border active:bg-slate-500 cursor-pointer rounded-md font-bold">
             </form>
         </div>
         <div
