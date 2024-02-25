@@ -21,6 +21,6 @@ class Cashier
             return $next($request);
         }
         
-        return redirect('/login')->with('error',"You don't have kasir access.");
+        return redirect('/login')->with('error',"Anda tidak memiliki akses kasir.");
     }
 }

@@ -50,7 +50,7 @@
                                 <label htmlFor="no">
                                     <h1 class="font-semibold">No Resep</h1>
                                     <input type="text" id="no" class="w-72 focus:outline-none"
-                                        value="{{ old('no', $recipes->no) }}" placeholder="masukkan no_resep"
+                                        value="{{ old('no', $recipes->no) }}" placeholder="masukkan no resep"
                                         name="no" required />
                                 </label>
                             </div>
@@ -70,7 +70,7 @@
                                     <h1 class="font-semibold">Nama Dokter</h1>
                                     <input type="text" id="nama_dokter" class="w-72 focus:outline-none"
                                         value="{{ old('nama_dokter', $recipes->nama_dokter) }}"
-                                        placeholder="masukkan nama_dokter" name="nama_dokter" required />
+                                        placeholder="masukkan nama dokter" name="nama_dokter" required />
                                 </label>
                             </div>
                             <div class="mt-5 border-solid border-b-2 border-slate-400">
@@ -100,7 +100,7 @@
                                     <h1 class="font-semibold">Nama Pasien</h1>
                                     <input type="text" id="nama_pasien" class="w-72 focus:outline-none"
                                         value="{{ old('nama_pasien', $recipes->nama_pasien) }}"
-                                        placeholder="masukkan nama_pasien" name="nama_pasien" required />
+                                        placeholder="masukkan nama pasien" name="nama_pasien" required />
                                 </label>
                             </div>
                             <div class="mt-5 border-solid border-b-2 border-slate-400">
@@ -108,7 +108,7 @@
                                     <h1 class="font-semibold">Jumlah Obat</h1>
                                     <input type="text" id="jumlah_obat" class="w-72 focus:outline-none"
                                         value="{{ old('jumlah_obat', $recipes->jumlah_obat) }}"
-                                        placeholder="masukkan jumlah_obat" name="jumlah_obat" required />
+                                        placeholder="masukkan jumlah obat" name="jumlah_obat" required />
                                 </label>
                             </div>
                             @if (session('error'))

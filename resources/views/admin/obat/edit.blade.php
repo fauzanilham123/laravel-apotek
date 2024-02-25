@@ -42,8 +42,8 @@
                             <label htmlFor="jumlah">
                                 <h1 class="font-semibold">Jumlah</h1>
                                 <input type="number" id="jumlah" class="w-72 focus:outline-none"
-                                    value="{{ old('jumlah', $drugs->jumlah) }}" placeholder="masukkan ujumlah"
-                                    name="jumlah" required />
+                                    value="{{ old('jumlah', $drugs->jumlah) }}" placeholder="masukkan jumlah" name="jumlah"
+                                    required />
                             </label>
                         </div>
                         <div class="mt-5 border-solid border-b-2 border-slate-400">

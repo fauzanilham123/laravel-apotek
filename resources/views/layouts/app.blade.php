@@ -42,25 +42,25 @@
                     </div>
                     <a href="/user">
                         <div
-                            class="hidden md:block bg-white h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer active:bg-slate-400 mt-10 {{ Request::is('user') ? 'bg-slate-400 ' : '' }}">
+                            class="hidden md:block h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer hover:bg-slate-400 mt-10 {{ Request::is('user') ? 'bg-slate-400' : 'bg-white' }}">
                             Kelola User
                         </div>
                     </a>
                     <a href="/obat">
                         <div
-                            class="hidden md:block bg-white h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer active:bg-slate-400 mt-5 {{ Request::is('obat') ? 'bg-slate-400 ' : '' }}">
+                            class="hidden md:block h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer hover:bg-slate-400 mt-5 {{ Request::is('obat') ? 'bg-slate-400 ' : 'bg-white' }}">
                             Kelola Obat
                         </div>
                     </a>
                     <a href="/laporan">
                         <div
-                            class="hidden md:block bg-white h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer active:bg-slate-400 mt-5 {{ Request::is('laporan') ? 'bg-slate-400 ' : '' }}">
+                            class="hidden md:block h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer hover:bg-slate-400 mt-5 {{ Request::is('laporan') ? 'bg-slate-400 ' : 'bg-white' }}">
                             Kelola Laporan
                         </div>
                     </a>
                     <a href="{{ route('logout') }}">
                         <div
-                            class="hidden md:block bg-white h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer active:bg-slate-400 mt-5">
+                            class="hidden md:block bg-white h-10 w-[280px] mx-auto rounded-md text-center leading-[40px] cursor-pointer hover:bg-slate-400 mt-5">
                             Logout
                         </div>
                     </a>

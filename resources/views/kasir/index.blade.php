@@ -244,11 +244,11 @@
                 </div>
             </div>
             <div id="kasir" class="mt-3 ml-28 hidden">
-                <h1 class="inline">total bayar : </h1>
+                <h1 class="inline">Total bayar : </h1>
                 <h1 id="bayar" class="inline"></h1>
                 <div class="mt-3 flex">
                     <button type="button" onclick="hitungKembali()"
-                        class="rounded-md bg-slate-200 active:border-slate-600 p-1 w-min cursor-pointer"> bayar
+                        class="rounded-md bg-slate-200 active:border-slate-600 p-1 w-min cursor-pointer"> Bayar
                     </button>
                     <input type="number" id="inputBayar"
                         class="ml-3 focus:outline-none border-solid border-b-2 border-slate-400 " />

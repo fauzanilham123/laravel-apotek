@@ -29,6 +29,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/', [LogActivityController::class, 'index'])->middleware('admin');
 Route::get('/laporan',[TransactionController::class, 'index'])->middleware('admin');
+Route::get('/laporan/pdf',[TransactionController::class, 'view_pdf'])->middleware('admin');
+Route::get('/laporan/download-pdf',[TransactionController::class, 'download_pdf'])->middleware('admin');
 Route::resource('/obat',DrugsController::class)->middleware('admin');
 Route::resource('/user',UserController::class)->middleware('admin');
 

@@ -66,7 +66,8 @@
                         </label>
                     </div>
                     <div class="mt-6 font-bold">
-                        <input type="submit" value="Login" class="bg-slate-300 p-1 border active:bg-slate-500" />
+                        <input type="submit" value="Login"
+                            class="bg-slate-300 p-1 border active:bg-slate-500 rounded-md" />
                     </div>
                 </form>
             </div>

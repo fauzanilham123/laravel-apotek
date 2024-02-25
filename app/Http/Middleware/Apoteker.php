@@ -21,6 +21,6 @@ class Apoteker
             return $next($request);
         }
         
-        return redirect('/login')->with('error',"You don't have apoteker access.");
+        return redirect('/login')->with('error',"Anda tidak memiliki akses apoteker.");
     }
 }

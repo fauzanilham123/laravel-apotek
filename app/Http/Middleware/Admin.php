@@ -21,6 +21,6 @@ class Admin
             return $next($request);
         }
         
-        return redirect('/login')->with('error',"You don't have admin access.");
+        return redirect('/login')->with('error',"Anda tidak memiliki akses admin.");
     }
 }

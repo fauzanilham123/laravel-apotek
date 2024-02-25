@@ -39,6 +39,17 @@ class TransactionController extends Controller
         return view('admin.laporan.index', compact('transactions'));
     }
 
+    public function download_pdf(){
+        $mpdf = new \Mpdf\Mpdf();
+        $transactions = Transaction::get();
+        $mpdf->WriteHTML(view('admin.laporan.pdf', compact('transactions')));
+        $mpdf->Output('Laporan-transaksi.pdf','D');
+    }
+    public function view_pdf(){
+        $transactions = Transaction::get();
+        return view('admin.laporan.pdf', compact('transactions'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
