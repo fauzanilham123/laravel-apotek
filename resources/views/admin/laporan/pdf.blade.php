@@ -47,6 +47,15 @@
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
+
+        #total {
+            text-align: center;
+            font: bold;
+        }
+
+        #jumlah {
+            font: bold;
+        }
     </style>
 </head>
 
@@ -68,6 +77,14 @@
                     <td>Rp{{ number_format($transaction->total_bayar, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
+            <tr>
+                <td id="total" colspan="2">
+                    <h3>Total Pendapatan</h3>
+                </td>
+                <td id="jumlah">
+                    <h3>Rp{{ number_format($totalPendapatan, 0, ',', '.') }}</h3>
+                </td>
+            </tr>
         </tbody>
     </table>
     <script>

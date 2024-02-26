@@ -52,9 +52,11 @@
                                     <select id="nama" class="w-72 focus:outline-none" name="no" required
                                         onchange="populateForm()">
                                         <option value="" disabled selected>Pilih No Resep</option>
-                                        @foreach ($recipes as $resep)
+                                        @forelse ($recipe as $resep)
                                             <option value="{{ $resep->id }}">{{ $resep->no }}</option>
-                                        @endforeach
+                                        @empty
+                                            <option value="" disabled>Tidak ada resep yang belum dibayar</option>
+                                        @endforelse
                                     </select>
                                 </label>
                             </div>
@@ -122,7 +124,7 @@
                         </div>
                     </div>
                     <div class="mt-2 md:ml-28">
-                        <input type="submit" value="Tambah"
+                        <input type="submit" value="Bayar"
                             class="bg-slate-300 p-1 border active:bg-slate-500 cursor-pointer rounded-md" />
                     </div>
                 </form>
@@ -184,6 +186,12 @@
                                     @sortablelink('jumlah_obat', 'Jumlah Obat')
                                 </p>
                             </th>
+                            <th class="p-4 border-b border-gray-300 bg-gray-200">
+                                <p
+                                    class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
+                                    Aksi
+                                </p>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -234,6 +242,34 @@
                                         class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
                                         {{ $recipe->jumlah_obat }}
 
+                                    </p>
+                                </td>
+                                <td class="p-4 border-b border-blue-gray-50">
+                                    <p
+                                        class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                                        @if ($recipe->transaksi == 0)
+                                            <p
+                                                class="block font-sans text-sm antialiased font-normal leading-normal text-red-500">
+                                                Belum di bayar
+                                            </p>
+                                        @else
+                                            <a href="{{ route('cetak-struk', ['transaksiId' => $recipe->id]) }}"
+                                                target="_blank">
+                                                <button
+                                                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex">
+                                                    <svg class="h-5 w-5 text-white mr-2" width="24"
+                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                                        <path
+                                                            d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
+                                                        <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
+                                                        <rect x="7" y="13" width="10" height="8"
+                                                            rx="2" />
+                                                    </svg>Cetak Struk</button>
+                                            </a>
+                                        @endif
                                     </p>
                                 </td>
                             </tr>

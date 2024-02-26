@@ -21,15 +21,16 @@ class CashierController extends Controller
                     }
                     });
                     // Filter hanya yang flag 1
-                    $recipes->where('flag', 1)->where('transaksi', 0);
+                    $recipes->where('flag', 1);
                 } else {
                     // Default hanya tampilkan flag 1
-                    $recipes->where('flag', 1)->where('transaksi', 0);
+                    $recipes->where('flag', 1);
                 }
-        $recipes = $recipes->sortable()->where('flag',1)->where('transaksi', 0)->paginate(10);
+        $recipes = $recipes->sortable()->where('flag',1)->paginate(10);
+        $recipe = recipe::get()->where('transaksi', 0)->where('flag', 1);
 
         //render view with recipe
-        return view('kasir.index', compact('recipes'));
+        return view('kasir.index', compact('recipes','recipe'));
     }
 
     public function store(Request $request)
@@ -64,5 +65,30 @@ class CashierController extends Controller
 
     return redirect()->route('kasir.index')-> with(['success' => 'Transaksi berhasil']);
         //
+    }
+
+    public function cetakStruk($transaksiId)
+{
+    // Ambil data transaksi dari tabel transactions berdasarkan transaksiId
+    $transaksi = Transaction::find($transaksiId);
+
+    // Ambil data resep dan obat terkait
+    $resep = recipe::with('obat')->find($transaksiId);
+
+    // Membuat data untuk struk transaksi
+    $data = [
+        'no_transaksi' => $transaksi->no,
+        'date' => $transaksi->date,
+        'nama_dokter' => $resep->nama_dokter,
+        'obat' => [
+            'nama_obat' => $resep->obat->nama_obat,
+        ],
+        'nama_pasien' => $resep->nama_pasien,
+        'jumlah_obat' => $resep->jumlah_obat,
+        'total_bayar' => $transaksi->total_bayar,
+    ];
+
+    // Membuat HTML untuk struk transaksi
+    return view('kasir.struk', compact('data'))->render();
     }
 }

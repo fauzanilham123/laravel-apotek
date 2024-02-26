@@ -37,3 +37,4 @@ Route::resource('/user',UserController::class)->middleware('admin');
 Route::resource('/resep',RecipeController::class)->middleware('apoteker');
 Route::resource('/kasir',CashierController::class)->middleware('kasir');
 Route::get('/get-recipe/{id}', [RecipeController::class, 'getRecipeById']);
+Route::get('cetak-struk/{transaksiId}', [CashierController::class, 'cetakStruk'])->name('cetak-struk');

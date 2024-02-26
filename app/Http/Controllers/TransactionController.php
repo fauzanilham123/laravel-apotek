@@ -15,7 +15,6 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
         // Ambil data dari form input
     $dariTanggal = (request('dari_tanggal'));
     $sampaiTanggal = (request('sampai_tanggal'));
@@ -24,30 +23,37 @@ class TransactionController extends Controller
     if ($sampaiTanggal) {
         $sampaiTanggal = date('Y-m-d', strtotime($sampaiTanggal . ' +1 day'));
     }
-
+    
     // Query dasar tanpa filter tanggal
     $transactions = Transaction::sortable()->where('flag', 1);
-
+    
     // Tambahkan filter berdasarkan tanggal jika input tersedia
     if ($dariTanggal && $sampaiTanggal) {
         $transactions->whereBetween('date', [$dariTanggal, $sampaiTanggal]);
     }
 
+    $totalPendapatan = $sampaiTanggal
+        ? $transactions->sum('total_bayar')
+        : Transaction::sum('total_bayar');
+
     // Ambil data yang sesuai dengan kondisi-kondisi yang telah ditambahkan
     $transactions = $transactions->paginate(10);
-        //render view with transactions
-        return view('admin.laporan.index', compact('transactions'));
-    }
+    
+    //render view with transactions
+    return view('admin.laporan.index', compact('transactions','totalPendapatan'));
+}
 
     public function download_pdf(){
         $mpdf = new \Mpdf\Mpdf();
         $transactions = Transaction::get();
-        $mpdf->WriteHTML(view('admin.laporan.pdf', compact('transactions')));
+        $totalPendapatan = Transaction::sum('total_bayar');
+        $mpdf->WriteHTML(view('admin.laporan.pdf', compact('transactions','totalPendapatan')));
         $mpdf->Output('Laporan-transaksi.pdf','D');
     }
     public function view_pdf(){
-        $transactions = Transaction::get();
-        return view('admin.laporan.pdf', compact('transactions'));
+    $transactions = Transaction::get();
+    $totalPendapatan = Transaction::sum('total_bayar');
+    return view('admin.laporan.pdf', compact('transactions','totalPendapatan'));
     }
 
     /**

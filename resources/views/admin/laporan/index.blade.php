@@ -70,6 +70,19 @@
                             </td>
                         </tr>
                     @endforeach
+                    <tr>
+                        <td colspan="2" class="p-4 border-b border-blue-gray-50">
+                            <h1
+                                class="block font-sans text-sm antialiased font-bold leading-normal text-blue-gray-900 text-center">
+                                Total Pendapatan
+                            </h1>
+                        </td>
+                        <td class="p-4 border-b border-blue-gray-50">
+                            <p class="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                                Rp{{ number_format($totalPendapatan, 0, ',', '.') }}
+                            </p>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="my-2">{{ $transactions->appends(request()->except('page'))->Links('pagination::tailwind') }}</div>
@@ -85,14 +98,14 @@
             <a href="laporan/pdf" target="_blank">
                 <div
                     class="ml-5 mt-5 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer w-max flex">
-                    Cetak data <svg class="h-5 w-5 text-white ml-2" width="24" height="24" viewBox="0 0 24 24"
-                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
+                    <svg class="h-5 w-5 text-white mr-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" />
                         <path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
                         <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
                         <rect x="7" y="13" width="10" height="8" rx="2" />
                     </svg>
+                    Cetak data
                 </div>
             </a>
         </div>
