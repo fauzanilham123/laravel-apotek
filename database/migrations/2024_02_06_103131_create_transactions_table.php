@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("no")->unique();
-            $table->dateTime("date");
+            $table->dateTime("date")->useCurrent()->useUtc();
             $table->bigInteger("total_bayar");
             $table->integer("id_user");
             $table->integer("id_drug");

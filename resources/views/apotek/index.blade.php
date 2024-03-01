@@ -88,7 +88,6 @@
                                                 {{ $drug->nama_obat }}
                                             </option>
                                         @endforeach
-
                                     </select>
                                 </label>
                             </div>

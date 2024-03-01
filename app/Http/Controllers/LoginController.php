@@ -28,7 +28,7 @@ class LoginController extends Controller
         $user = user::where('username', $credentials['username'])->first();
 
         if ($user && $user->flag == 0) {
-            return back()->with("error", 'Akun Anda sudah tidak aktif.');
+            return back()->with("error", 'Akun Anda sudah tidak aktif.')->withInput();
         }
 
         if (Auth::attempt($credentials)) {
@@ -49,7 +49,7 @@ class LoginController extends Controller
                 return redirect()->intended('/kasir')->with("success", 'Login sebagai kasir berhasil!');
                 }
             }
-        return back()->with("error", 'Login gagal! username atau password salah');
+        return back()->with("error", 'Login gagal! username atau password salah')->withInput();
     }
 
             public function logout(Request $request): RedirectResponse

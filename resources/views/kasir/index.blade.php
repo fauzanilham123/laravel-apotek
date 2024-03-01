@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     <div class="mt-2 md:ml-28">
-                        <input type="submit" value="Bayar"
+                        <input type="submit" value="Tambah"
                             class="bg-slate-300 p-1 border active:bg-slate-500 cursor-pointer rounded-md" />
                     </div>
                 </form>
@@ -253,7 +253,7 @@
                                                 Belum di bayar
                                             </p>
                                         @else
-                                            <a href="{{ route('cetak-struk', ['transaksiId' => $recipe->id]) }}"
+                                            <a href="{{ route('cetak-struk', ['recipeId' => $recipe->id]) }}"
                                                 target="_blank">
                                                 <button
                                                     class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex">

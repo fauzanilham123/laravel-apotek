@@ -39,9 +39,9 @@
                     <p>Silahkan Login Dahulu !</p>
                 </div>
 
-                @if (session()->has('loginError'))
+                @if (session()->has('error'))
                     <div class="text-red-700 text-center">
-                        {{ session('loginError') }}
+                        {{ session('error') }}
                     </div>
                 @endif
 
@@ -59,9 +59,27 @@
                     <div class="w-72 mx-auto mt-5 md:w-full md:mt-10">
                         <label htmlFor="nama">
                             <p class="font-semibold mb-2">Password</p>
-                            <div class="border-solid border-b-2 border-slate-400 ">
+                            <div class="border-solid border-b-2 border-slate-400 flex ">
                                 <input type="password" placeholder="masukkan password" class="focus:outline-none w-full"
-                                    id="nama" name="password" value="{{ old('password') }}" required />
+                                    id="password" name="password" value="{{ old('password') }}" required />
+
+                                <button type="button" id="showPasswordBtn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="w-6 h-6 eye-closed hidden text-slate-400 ">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <svg class="h-6 w-6 eye-open text-slate-400 " viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                        <line x1="1" y1="1" x2="23" y2="23" />
+                                    </svg>
+                                </button>
                             </div>
                         </label>
                     </div>
@@ -81,6 +99,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const passwordInput = document.getElementById('password');
+        const showPasswordBtn = document.getElementById('showPasswordBtn');
+
+        showPasswordBtn.addEventListener('click', function() {
+
+            // Toggle icon
+            this.querySelector('.eye-open').classList.toggle('hidden');
+            this.querySelector('.eye-closed').classList.toggle('hidden');
+
+            // Toggle password visibility
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+
+        });
+    </script>
     <script>
         //message with toastr
         @if (session()->has('success'))

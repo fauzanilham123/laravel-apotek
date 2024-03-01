@@ -89,7 +89,7 @@
         </div>
         <div
             class="relative flex flex-col md:max-w-screen md:max-h-screen h-72 overflow-scroll text-gray-700 bg-white shadow-md rounded-xl bg-clip-border ">
-            <table class="w-full text-left table-auto min-w-max">
+            <table class="w-full text-left table-auto min-w-max" id="dataTable">
                 <thead>
                     <tr>
                         <th class="p-4 border-b border-gray-300 bg-gray-200">

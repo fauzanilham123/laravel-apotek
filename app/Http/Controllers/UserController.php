@@ -20,8 +20,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
+    public function index(){
             $users = user::query();
                 if(request('cari')) {
                     $users->where(function($query) {
@@ -78,27 +77,35 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-        $this->validate($request, [
-            'role' => 'required',
-            'name' =>'required',
-            'telepon' => 'required',
-            'alamat' => 'required',
-            'username' => 'required|unique:users,username,'. $id,
-            'password',
-        ]);
-            $users = user::findOrFail($id);
+    $this->validate($request, [
+        'role' => 'required',
+        'name' => 'required',
+        'telepon' => 'required',
+        'alamat' => 'required',
+        'username' => 'required|unique:users,username,' . $id,
+        'password' => 'nullable', // Tambahkan aturan validasi untuk password
+    ]);
 
-            $users->update([
+    $user = User::findOrFail($id);
+
+    $dataToUpdate = [
         'role' => $request->role,
         'name' => $request->name,
         'telepon' => $request->telepon,
         'alamat' => $request->alamat,
         'username' => $request->username,
-        'password' => Hash::make($request->password),
-    ]);
-    activity()->causedBy(Auth::user())->log('Mengedit user pada id ' . $id );
-        return redirect()->route('user.index')-> with(['success' => 'Data Berhasil Disimpan!']);
+    ];
+
+    // Hanya perbarui password jika diberikan dalam permintaan
+    if ($request->has('password') && !empty($request->password)) {
+        $dataToUpdate['password'] = Hash::make($request->password);
+    }
+
+    $user->update($dataToUpdate);
+
+    activity()->causedBy(Auth::user())->log('Mengedit user pada id ' . $id);
+
+    return redirect()->route('user.index')->with(['success' => 'Data Berhasil Disimpan!']);
     }
 
     /**

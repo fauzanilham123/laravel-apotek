@@ -53,7 +53,6 @@ class CashierController extends Controller
         'id_recipe' => $request->id_recipe,
         'no' => $randomTransactionNumber,
         'id_user' => $user->id,
-        'date' => now(),
         'flag' => 1,
     ]);
 
@@ -67,13 +66,13 @@ class CashierController extends Controller
         //
     }
 
-    public function cetakStruk($transaksiId)
+    public function cetakStruk($idRecipe)
 {
-    // Ambil data transaksi dari tabel transactions berdasarkan transaksiId
-    $transaksi = Transaction::find($transaksiId);
+    // Ambil data transaksi dari tabel transactions berdasarkan idre$idRecipe
+    $transaksi = Transaction::where('id_recipe', $idRecipe)->first();
 
     // Ambil data resep dan obat terkait
-    $resep = recipe::with('obat')->find($transaksiId);
+    $resep = recipe::with('obat')->find($idRecipe);
 
     // Membuat data untuk struk transaksi
     $data = [

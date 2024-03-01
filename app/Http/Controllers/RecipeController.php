@@ -24,12 +24,12 @@ class RecipeController extends Controller
                     }
                     });
                     // Filter hanya yang flag 1
-                    $recipes->where('flag', 1);
+                    $recipes->where('flag', 1)->where('transaksi',0);
                 } else {
                     // Default hanya tampilkan flag 1
-                    $recipes->where('flag', 1);
+                    $recipes->where('flag', 1)->where('transaksi',0);
                 }
-        $recipes = $recipes->sortable()->where('flag',1)->paginate(10);
+        $recipes = $recipes->sortable()->where('flag',1)->where('transaksi',0)->paginate(10);
         $drugs = drugs::get()->where('flag', 1);
 
         //render view with recipes
