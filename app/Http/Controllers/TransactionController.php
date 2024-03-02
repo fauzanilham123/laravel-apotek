@@ -6,6 +6,7 @@ use App\Models\transaction;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 
 class TransactionController extends Controller
@@ -18,6 +19,9 @@ class TransactionController extends Controller
         // Ambil data dari form input
     $dariTanggal = (request('dari_tanggal'));
     $sampaiTanggal = (request('sampai_tanggal'));
+
+    Session::put('dari_tanggal', $dariTanggal);
+    Session::put('sampai_tanggal', $sampaiTanggal);
 
     // Tambahkan satu hari ke `sampai_tanggal`
     if ($sampaiTanggal) {
@@ -44,15 +48,39 @@ class TransactionController extends Controller
 }
 
     public function download_pdf(){
-        $mpdf = new \Mpdf\Mpdf();
+    $dariTanggal = Session::get('dari_tanggal');
+    $sampaiTanggal = Session::get('sampai_tanggal');
+
+    if($sampaiTanggal) {
+        $sampaiTanggal = date('Y-m-d', strtotime($sampaiTanggal. ' +1 day'));
+    }
+
+    if($dariTanggal && $sampaiTanggal) {
+        $transactions = Transaction::whereBetween('date', [$dariTanggal, $sampaiTanggal])->get();
+    } else {
         $transactions = Transaction::get();
-        $totalPendapatan = Transaction::sum('total_bayar');
-        $mpdf->WriteHTML(view('admin.laporan.pdf', compact('transactions','totalPendapatan')));
-        $mpdf->Output('Laporan-transaksi.pdf','D');
+    }
+
+    $totalPendapatan = $transactions->sum('total_bayar');
+    $mpdf = new \Mpdf\Mpdf();
+    $mpdf->WriteHTML(view('admin.laporan.pdf', compact('transactions','totalPendapatan')));
+    $mpdf->Output('Laporan-transaksi.pdf','D');
     }
     public function view_pdf(){
-    $transactions = Transaction::get();
-    $totalPendapatan = Transaction::sum('total_bayar');
+    $dariTanggal = Session::get('dari_tanggal');
+    $sampaiTanggal = Session::get('sampai_tanggal');
+
+    if($sampaiTanggal) {
+        $sampaiTanggal = date('Y-m-d', strtotime($sampaiTanggal. ' +1 day'));
+    }
+
+    if($dariTanggal && $sampaiTanggal) {
+        $transactions = Transaction::whereBetween('date', [$dariTanggal, $sampaiTanggal])->get();
+    } else {
+        $transactions = Transaction::get();
+    }
+
+    $totalPendapatan = $transactions->sum('total_bayar');
     return view('admin.laporan.pdf', compact('transactions','totalPendapatan'));
     }
 

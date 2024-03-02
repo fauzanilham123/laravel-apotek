@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Apoteker</title>
+    <link rel="shortcut icon" href="{{ asset('storage/images/icon_admin.png') }}" />
+
+    <title>admin</title>
     <style>
         /* Gaya untuk elemen body */
         body {
@@ -55,6 +57,10 @@
 
         #jumlah {
             font: bold;
+        }
+
+        h3 {
+            text-align: center;
         }
     </style>
 </head>
